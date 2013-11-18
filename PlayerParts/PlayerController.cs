@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour {
 
     private bool isAlive = true;
 
+    public float timeTillStarve = 60;
+
 
     // Food stuffs
     private int secsSinceLastEaten;
@@ -42,11 +44,12 @@ public class PlayerController : MonoBehaviour {
                     KillPlayer("DROWN");
                     isAlive = false;
                     break;
-                case "Food": // Update food stat
+                case "Food": // Remove Food & update stats
                     hit.gameObject.SetActive(false);
                     SecsSinceLastEaten = 1;
                     break;
-                default: break;
+                case "Tech":
+                    break;
             }        
         }
     }
@@ -58,6 +61,13 @@ public class PlayerController : MonoBehaviour {
 
     private void KillPlayer(string deathType)
     {
+        // disable controls
+        this.GetComponent<CharacterMotor>().enabled = false;
+        this.GetComponent<FPSInputController>().enabled = false;
+        this.GetComponent<MouseLook>().enabled = false;
+        this.transform.GetChild(1).GetComponent<MouseLook>().enabled = false;
+
+        // call up Death in game manager, pass type
         GameManager.GetComponent<GameManager>().PlayerDeath(deathType);
     }
 
@@ -66,7 +76,7 @@ public class PlayerController : MonoBehaviour {
         while (true)
         {
             yield return new WaitForSeconds(1);
-            if (SecsSinceLastEaten < 40)
+            if (SecsSinceLastEaten < timeTillStarve)
 			{
                 SecsSinceLastEaten += 1;
 			}
