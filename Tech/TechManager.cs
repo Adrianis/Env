@@ -10,9 +10,6 @@ public class TechManager : MonoBehaviour {
     public float spawnForceSpeed = 5;
     public ForceMode spawnForceMode = ForceMode.Force;
 
-    public int maxSpawnCount = 2;
-    public int actualSpawnCount;
-
     void Start()
     {
         StartCoroutine("DelaySpawnNewTech");
@@ -31,8 +28,6 @@ public class TechManager : MonoBehaviour {
 
         GameObject Tech = (GameObject)Instantiate(PfbTech, spawnAt, transform.rotation);
         Tech.rigidbody.AddForce(spawnDir * spawnForceSpeed, spawnForceMode);
-
-        actualSpawnCount++;
     }
 
     IEnumerator DelaySpawnNewTech()
@@ -40,10 +35,7 @@ public class TechManager : MonoBehaviour {
         while (true)
         {
             yield return new WaitForSeconds(Random.Range(minSpawnTime, maxSpawnTime));
-            if (actualSpawnCount < maxSpawnCount)
-            {
-                SpawnTech();
-            }
+            SpawnTech();
         }
     }
 }
