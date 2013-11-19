@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    // tech
+    // tech [deprecated]
     private int techLevel;
     public int TechLevel
     {
@@ -33,12 +33,20 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    // sprinting
+    // upgrades
     private bool canSprint;
-    public float sprintSpeed = 25;
     private float defaultSpeed;
+    public float sprintSpeed;
+
+    public float sprintUpgradeIterator;
+    public float jumpUpgradeIterator;
+    public float gravUpgradeIterator;
 
 
+
+    ////////////////////
+    // ENGINE METHODS //
+    ////////////////////
 
     void Awake()
     {
@@ -56,22 +64,19 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
-        if (canSprint)
+        if (Input.GetButtonDown("Sprint"))
         {
-            if (Input.GetButtonDown("Sprint"))
-            {
-                // alter movement speeds while key is held down
-                Motor.movement.maxForwardSpeed = sprintSpeed;
-                Motor.movement.maxSidewaysSpeed = sprintSpeed;
-                Motor.movement.maxBackwardsSpeed = sprintSpeed;
-            }
-            else if (Input.GetButtonUp("Sprint"))
-            {
-                // revert movement speeds to default
-                Motor.movement.maxForwardSpeed = defaultSpeed;
-                Motor.movement.maxSidewaysSpeed = defaultSpeed;
-                Motor.movement.maxBackwardsSpeed = defaultSpeed;
-            }
+            // alter movement speeds while key is held down
+            Motor.movement.maxForwardSpeed = sprintSpeed;
+            Motor.movement.maxSidewaysSpeed = sprintSpeed;
+            Motor.movement.maxBackwardsSpeed = sprintSpeed;
+        }
+        else if (Input.GetButtonUp("Sprint"))
+        {
+            // revert movement speeds to default
+            Motor.movement.maxForwardSpeed = defaultSpeed;
+            Motor.movement.maxSidewaysSpeed = defaultSpeed;
+            Motor.movement.maxBackwardsSpeed = defaultSpeed;
         }
     }
 
@@ -90,41 +95,30 @@ public class PlayerController : MonoBehaviour {
                     hit.gameObject.SetActive(false);
                     SecsSinceLastEaten = 1;
                     break;
-                case "Tech":
+                case "Tech": // Remove Tech & upgrade stats
                     hit.gameObject.SetActive(false);
-                    TechLevel++;
+                    TechLevel++; // [deprecated]
                     break;
-            }        
+            }
         }
     }
+
+
+
+    ////////////////////
+    // MEMBER METHODS //
+    ////////////////////
 
     private void UpdateTechLevel()
     {
-        // do logic for this tech level
-        switch (TechLevel)
-        {
-            case 1:
-                canSprint = true;
-                break;
-            case 2:
-                UpgradeJump();
-                break;
-            case 3:
-                break;
+        // upgrade values according to iterators
+        Motor.movement.gravity -= gravUpgradeIterator;
+        Motor.movement.maxFallSpeed -= gravUpgradeIterator;
+        Motor.jumping.extraHeight += jumpUpgradeIterator;
+        sprintSpeed += sprintUpgradeIterator;
 
-            default: Debug.Log("No more levels available!");
-                break;
-        }
-        // update GameManager with new tech level for display
+        // update GameManager with new tech level for display [deprecated]
         GameManager.GetComponent<GameManager>().playerTechLevel = TechLevel;
-    }
-
-    private void UpgradeJump()
-    {
-        Motor.movement.gravity = 15;
-        Motor.movement.maxFallSpeed = 15;
-        Motor.jumping.baseHeight = 2;
-        Motor.jumping.extraHeight = 5;
     }
 
     private void UpdateGameManagerSeconds()
@@ -144,6 +138,12 @@ public class PlayerController : MonoBehaviour {
         // call up Death in game manager, pass type
         GameManager.GetComponent<GameManager>().PlayerDeath(deathType);
     }
+
+
+
+    ////////////////
+    // COROUTINES //
+    ////////////////
 
     private IEnumerator UpdateSecondsSinceLastEaten()
     {
