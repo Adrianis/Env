@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
     private float newTimeScale;
 
     public int secondsSinceLastEaten;
+    public int playerTechLevel;
 
     public float delayLevelReloadOnDeath = 1;
 
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour {
     {
         GUI.Label(new Rect(10, 65, 1000, 20), "Time to survive: " + (360 - (int)Time.timeSinceLevelLoad));
         GUI.Label(new Rect(10, 85, 1000, 20), "Time till starvation: " + (60 - secondsSinceLastEaten));
+        GUI.Label(new Rect(10, 105, 1000, 20), "Tech Level: " + playerTechLevel);
     }
 
     public void PlayerDeath(string deathType)
