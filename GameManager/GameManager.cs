@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     {
         ChangeTimeScales();
         this.GetComponent<GUIScripts>().enabled = false;
+        
 	}
 
     void OnGUI()
