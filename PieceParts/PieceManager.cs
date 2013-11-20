@@ -7,7 +7,7 @@ public class PieceManager : MonoBehaviour {
     public GameObject InitialPiece;
 
     public int lengthOfPieceLineX = 181;
-    public int lengthOfPieceLineY = 77;
+    public int lengthOfPieceLineZ = 77;
 
     private Vector3 vStartPosBR;
     private Vector3 vSizeOfPiece;
@@ -40,7 +40,7 @@ public class PieceManager : MonoBehaviour {
 
     void PopulatePieces()
     {
-        for (int a = 1; a <= lengthOfPieceLineY; a++)
+        for (int a = 1; a <= lengthOfPieceLineZ; a++)
         {
             for (int i = 1; i <= lengthOfPieceLineX; i++)
             {
@@ -48,7 +48,7 @@ public class PieceManager : MonoBehaviour {
                 Instantiate(PfbPiece, nextPos, qStartRotBR);
             }
 
-            nextPos.x = vStartPosBR.x; // reset X to original
+            nextPos.x = vStartPosBR.x - vSizeOfPiece.x; // reset X to original
             nextPos.z -= vSizeOfPiece.y; // add Y value to move placement up
         }
         GameManager.GetComponent<GameManager>().DisplayLoadingText(false);

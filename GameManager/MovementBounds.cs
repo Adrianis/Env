@@ -16,7 +16,7 @@ public class MovementBounds : MonoBehaviour {
         PieceManager = GameObject.FindGameObjectWithTag("PieceManager");
 
         float LineX = PieceManager.GetComponent<PieceManager>().lengthOfPieceLineX * 2;
-        float LineY = (PieceManager.GetComponent<PieceManager>().lengthOfPieceLineY * 4) - 4;
+        float LineY = (PieceManager.GetComponent<PieceManager>().lengthOfPieceLineZ * 4) - 4;
 
         vBoundsBR = InitialPiece.transform.position;
 
