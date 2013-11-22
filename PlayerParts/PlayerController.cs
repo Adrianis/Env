@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour {
     private CharacterMotor Motor;
 
     private bool isAlive = true;
+    public bool canDie = true;
+    public Vector3 centerPoint;
 
     // food
     public float timeTillStarve = 60;
@@ -60,6 +62,14 @@ public class PlayerController : MonoBehaviour {
 
         // initialise default speed to its value from start game start
         defaultSpeed = Motor.movement.maxForwardSpeed;
+
+        MovementBounds MB = GameManager.GetComponent<MovementBounds>();
+        //centerPoint = new Vector3();
+        //float lenX = MB.vBoundsBR.x
+        //float lenZ = 
+        //centerPoint.x = MB.vBoundsTR.x - (MB.vBoundsTL.x / 2);
+        //centerPoint.z = MB.vBoundsTR.z - (MB.vBoundsBR.z / 2);
+        
     }
 
     void Update()
@@ -87,9 +97,11 @@ public class PlayerController : MonoBehaviour {
             switch (hit.gameObject.tag)
             {
                 case "Floor": // Kill the player if they hit the water
-                    Debug.LogWarning("PlayerController: Player Death");
-                    KillPlayer("DROWN");
-                    isAlive = false;
+                    if (canDie)
+                    {
+                        KillPlayer("DROWN");
+                        isAlive = false;
+                    }
                     break;
                 case "Food": // Remove Food & update stats
                     hit.gameObject.SetActive(false);
@@ -151,13 +163,13 @@ public class PlayerController : MonoBehaviour {
         {
             yield return new WaitForSeconds(1);
             if (SecsSinceLastEaten < timeTillStarve)
-			{
+            {
                 SecsSinceLastEaten += 1;
-			}
+            }
             else
-			{
+            {
                 KillPlayer("STARVE");
-			}
+            }
         }
     }
 }

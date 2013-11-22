@@ -12,15 +12,21 @@ public class GameManager : MonoBehaviour {
     public float delayLevelReloadOnDeath = 1;
 
     private GameObject Display;
+    private GameObject Player;
+    private GameObject Hoover;
 
     public int secsTillGameEnd = 360;
-    public float secsTillEndGameResume = 3;
+    public float secsTillEndGameResume = 6;
 
 	void Start () 
     {
         ChangeTimeScales();
         this.GetComponent<GUIScripts>().enabled = false;
+
         Display = GameObject.FindGameObjectWithTag("Display");
+        Player = GameObject.FindGameObjectWithTag("Player");
+        Hoover = GameObject.FindGameObjectWithTag("Hoover");
+
         StartCoroutine("CheckForGameEnd");
 	}
 
@@ -86,6 +92,7 @@ public class GameManager : MonoBehaviour {
         }
         DisplayEndingText();
         StartCoroutine("DelayEndGameResume");
+        Player.GetComponent<PlayerController>().canDie = false;
     }
 
     IEnumerator DelayEndGameResume()
@@ -93,5 +100,6 @@ public class GameManager : MonoBehaviour {
         // fade out the Outro text so the end game can continue
         yield return new WaitForSeconds(secsTillEndGameResume);
         Display.GetComponent<DisplayFade>().StartFade("OUT");
+        Hoover.GetComponent<HooverDestruction>().FallApart();
     }
 }
