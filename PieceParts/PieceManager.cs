@@ -48,7 +48,7 @@ public class PieceManager : MonoBehaviour {
                 Instantiate(PfbPiece, nextPos, qStartRotBR);
             }
 
-            nextPos.x = vStartPosBR.x - vSizeOfPiece.x; // reset X to original
+            nextPos.x = vStartPosBR.x - vSizeOfPiece.x; // reset X to original - 1 to fill first Z line
             nextPos.z -= vSizeOfPiece.y; // add Y value to move placement up
         }
         GameManager.GetComponent<GameManager>().DisplayLoadingText(false);

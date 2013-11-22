@@ -11,11 +11,13 @@ public class GameManager : MonoBehaviour {
 
     public float delayLevelReloadOnDeath = 1;
 
+    private GameObject Display;
+
 	void Start () 
     {
         ChangeTimeScales();
         this.GetComponent<GUIScripts>().enabled = false;
-        
+        Display = GameObject.FindGameObjectWithTag("Display");
 	}
 
     void OnGUI()
@@ -41,15 +43,10 @@ public class GameManager : MonoBehaviour {
 
     public void DisplayLoadingText(bool bIsLoading)
     {
-        if (bIsLoading)
+        if (!bIsLoading)
         {
-            this.GetComponent<GUIScripts>().enabled = true;
-            this.GetComponent<GUIScripts>().bLoading = true;
-        }
-        else
-        {            
-            this.GetComponent<GUIScripts>().bLoading = false;
-            this.GetComponent<GUIScripts>().enabled = false;
+			Display.GetComponent<DisplayFade>().SwitchMaterial("INTRO");
+            Display.GetComponent<DisplayFade>().StartFade("OUT");
         }
     }
 
