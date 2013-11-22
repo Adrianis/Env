@@ -13,16 +13,20 @@ public class GameManager : MonoBehaviour {
 
     private GameObject Display;
 
+    public int secsTillGameEnd = 360;
+    public float secsTillEndGameResume = 3;
+
 	void Start () 
     {
         ChangeTimeScales();
         this.GetComponent<GUIScripts>().enabled = false;
         Display = GameObject.FindGameObjectWithTag("Display");
+        StartCoroutine("CheckForGameEnd");
 	}
 
     void OnGUI()
     {
-        GUI.Label(new Rect(10, 65, 1000, 20), "Time to survive: " + (360 - (int)Time.timeSinceLevelLoad));
+        GUI.Label(new Rect(10, 65, 1000, 20), "Time to survive: " + (secsTillGameEnd - (int)Time.timeSinceLevelLoad));
         GUI.Label(new Rect(10, 85, 1000, 20), "Time till starvation: " + (60 - secondsSinceLastEaten));
         GUI.Label(new Rect(10, 105, 1000, 20), "Tech Level: " + playerTechLevel);
     }
@@ -50,6 +54,14 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public void DisplayEndingText()
+    {
+        Display.GetComponent<DisplayFade>().SwitchMaterial("OUTRO");
+        Display.GetComponent<DisplayFade>().StartFade("IN");
+    }
+
+
+
     private void ChangeTimeScales()
     {
         newTimeScale = Time.timeScale / timeSlowFactor;
@@ -60,7 +72,26 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator DelayLevelReload()
     {
+        // delay the level reload after death so death message can be read
         yield return new WaitForSeconds(delayLevelReloadOnDeath);
         Application.LoadLevel("EnvTestScene");
+    }
+
+    IEnumerator CheckForGameEnd()
+    {
+        // repeat for duration of game, checking when the survival time has expired, then run the Outro text
+        while ((secsTillGameEnd - (int)Time.timeSinceLevelLoad) > 0)
+        {
+            yield return new WaitForSeconds(1);
+        }
+        DisplayEndingText();
+        StartCoroutine("DelayEndGameResume");
+    }
+
+    IEnumerator DelayEndGameResume()
+    {
+        // fade out the Outro text so the end game can continue
+        yield return new WaitForSeconds(secsTillEndGameResume);
+        Display.GetComponent<DisplayFade>().StartFade("OUT");
     }
 }
