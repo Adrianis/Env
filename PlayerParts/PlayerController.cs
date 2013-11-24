@@ -64,12 +64,8 @@ public class PlayerController : MonoBehaviour {
         defaultSpeed = Motor.movement.maxForwardSpeed;
 
         MovementBounds MB = GameManager.GetComponent<MovementBounds>();
-        //centerPoint = new Vector3();
-        //float lenX = MB.vBoundsBR.x
-        //float lenZ = 
-        //centerPoint.x = MB.vBoundsTR.x - (MB.vBoundsTL.x / 2);
-        //centerPoint.z = MB.vBoundsTR.z - (MB.vBoundsBR.z / 2);
-        
+
+        transform.GetChild(1).transform.LookAt(GameManager.transform);
     }
 
     void Update()
