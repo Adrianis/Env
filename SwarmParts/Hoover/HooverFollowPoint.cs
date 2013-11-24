@@ -30,6 +30,12 @@ public class HooverFollowPoint : MonoBehaviour {
         vBoundsBL = GameManager.GetComponent<MovementBounds>().vBoundsBL;
         vBoundsTL = GameManager.GetComponent<MovementBounds>().vBoundsTL;
         vBoundsTR = GameManager.GetComponent<MovementBounds>().vBoundsTR;
+
+        foreach (AudioSource audio in GetComponents<AudioSource>())
+        {
+            audio.enabled = false;
+        }
+        StartCoroutine("DelayAudioEnable");
     }
 
     void Update()
@@ -51,6 +57,15 @@ public class HooverFollowPoint : MonoBehaviour {
             float z = Random.Range(vBoundsTR.z, vBoundsBL.z);
             MovePosCur = new Vector3(x, -17, z);
             yield return new WaitForSeconds(targetUpdateTime);
+        }
+    }
+
+    IEnumerator DelayAudioEnable()
+    {
+        yield return new WaitForSeconds(1);
+        foreach (AudioSource audio in GetComponents<AudioSource>())
+        {
+            audio.enabled = true;
         }
     }
 }

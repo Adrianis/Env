@@ -32,6 +32,9 @@ public class SwarmManager : MonoBehaviour {
         vBoundsBL = GameManager.GetComponent<MovementBounds>().vBoundsBL;
         vBoundsTL = GameManager.GetComponent<MovementBounds>().vBoundsTL;
         vBoundsTR = GameManager.GetComponent<MovementBounds>().vBoundsTR;
+
+        GetComponent<AudioSource>().enabled = false;
+        StartCoroutine("DelayAudioEnable");
 	}
 
     void Update()
@@ -51,5 +54,11 @@ public class SwarmManager : MonoBehaviour {
             MovePosCur = new Vector3(x, hoverHeight, z);
             yield return new WaitForSeconds(targetUpdateTime);
         }
+    }
+
+    IEnumerator DelayAudioEnable()
+    {
+        yield return new WaitForSeconds(1);
+        GetComponent<AudioSource>().enabled = true;
     }
 }

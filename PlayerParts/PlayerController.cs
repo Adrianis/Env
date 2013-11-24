@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour {
 
         transform.position = FindSpawnLocation();
         transform.LookAt(GameManager.transform);
-        
+
     }
 
     void Update()
