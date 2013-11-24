@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour {
 
     private GameObject GameManager;
     private CharacterMotor Motor;
+    private MovementBounds MoveBound;
 
     private bool isAlive = true;
     public bool canDie = true;
@@ -52,7 +53,6 @@ public class PlayerController : MonoBehaviour {
 
     void Awake()
     {
-        GameManager = GameObject.FindGameObjectWithTag("GameManager");
         Motor = this.GetComponent<CharacterMotor>();
     }
 
@@ -63,9 +63,12 @@ public class PlayerController : MonoBehaviour {
         // initialise default speed to its value from start game start
         defaultSpeed = Motor.movement.maxForwardSpeed;
 
-        MovementBounds MB = GameManager.GetComponent<MovementBounds>();
+        GameManager = GameObject.FindGameObjectWithTag("GameManager");
+        MoveBound = GameManager.GetComponent<MovementBounds>();
 
-        transform.GetChild(1).transform.LookAt(GameManager.transform);
+        transform.position = FindSpawnLocation();
+        transform.LookAt(GameManager.transform);
+        
     }
 
     void Update()
@@ -147,7 +150,13 @@ public class PlayerController : MonoBehaviour {
         GameManager.GetComponent<GameManager>().PlayerDeath(deathType);
     }
 
-
+    private Vector3 FindSpawnLocation()
+    {
+        float x = Random.Range(MoveBound.vBoundsBR.x, MoveBound.vBoundsTL.x);
+        float z = Random.Range(MoveBound.vBoundsTR.z, MoveBound.vBoundsBL.z);
+        Vector3 vRet = new Vector3(x, -17, z);
+        return vRet;
+    }
 
     ////////////////
     // COROUTINES //
