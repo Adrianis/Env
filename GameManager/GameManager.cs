@@ -18,6 +18,12 @@ public class GameManager : MonoBehaviour {
     public int secsTillGameEnd = 360;
     public float secsTillEndGameResume = 6;
 
+
+    ////////////////////
+    // ENGINE METHODS //
+    ////////////////////
+
+
 	void Start () 
     {
         ChangeTimeScales();
@@ -36,6 +42,21 @@ public class GameManager : MonoBehaviour {
         GUI.Label(new Rect(10, 85, 1000, 20), "Time till starvation: " + (Player.GetComponent<PlayerController>().timeTillStarve - secondsSinceLastEaten));
         GUI.Label(new Rect(10, 105, 1000, 20), "Tech Level: " + playerTechLevel);
     }
+
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) == true)
+        {
+            Application.Quit();
+        }
+    }
+
+
+    ////////////////////
+    // MEMBER METHODS //
+    ////////////////////
+
 
     public void PlayerDeath(string deathType)
     {
@@ -75,6 +96,11 @@ public class GameManager : MonoBehaviour {
         Time.fixedDeltaTime = Time.fixedDeltaTime / timeSlowFactor;
         Time.maximumDeltaTime = Time.maximumDeltaTime / timeSlowFactor;
     }
+
+
+    ////////////////
+    // COROUTINES //
+    ////////////////
 
     IEnumerator DelayLevelReload()
     {

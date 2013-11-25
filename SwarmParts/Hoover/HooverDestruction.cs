@@ -3,6 +3,13 @@ using System.Collections;
 
 public class HooverDestruction : MonoBehaviour {
 
+    private GameObject HooverFollowPoint;
+
+    void Start()
+    {
+        HooverFollowPoint = GameObject.FindGameObjectWithTag("HooverFollowPoint");
+    }
+
     public void FallApart()
     {
         foreach (Transform child in transform)
@@ -15,5 +22,6 @@ public class HooverDestruction : MonoBehaviour {
         }
 
         this.transform.DetachChildren();
+        HooverFollowPoint.SetActive(false);
     }
 }
