@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour {
     void OnGUI()
     {
         GUI.Label(new Rect(10, 65, 1000, 20), "Time to survive: " + (secsTillGameEnd - (int)Time.timeSinceLevelLoad));
-        GUI.Label(new Rect(10, 85, 1000, 20), "Time till starvation: " + (60 - secondsSinceLastEaten));
+        GUI.Label(new Rect(10, 85, 1000, 20), "Time till starvation: " + (Player.GetComponent<PlayerController>().timeTillStarve - secondsSinceLastEaten));
         GUI.Label(new Rect(10, 105, 1000, 20), "Tech Level: " + playerTechLevel);
     }
 

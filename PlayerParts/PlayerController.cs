@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour {
     public float sprintUpgradeIterator;
     public float jumpUpgradeIterator;
     public float gravUpgradeIterator;
+    public float starveTimeUpgradeIterator;
 
 
 
@@ -127,6 +128,7 @@ public class PlayerController : MonoBehaviour {
         Motor.movement.maxFallSpeed -= gravUpgradeIterator;
         Motor.jumping.extraHeight += jumpUpgradeIterator;
         sprintSpeed += sprintUpgradeIterator;
+        timeTillStarve += starveTimeUpgradeIterator;
 
         // update GameManager with new tech level for display [deprecated]
         GameManager.GetComponent<GameManager>().playerTechLevel = TechLevel;
