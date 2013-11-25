@@ -13,17 +13,18 @@ public class GUIScripts : MonoBehaviour {
     {
         guistyle = new GUIStyle();
         guistyle.fontSize = 100;
+        guistyle.normal.textColor = Color.white;
     }
     
     void OnGUI()
     {
         if (bLoading)
         {
-            GUI.Label(new Rect(400, 130, 10000, 100), "LOADING...", guistyle);
+            GUI.Label(new Rect(Screen.width / 2 - 400,Screen.height / 2 - 100, 300, 80), "LOADING...", guistyle);
         }
         else if (bDeath)
         {
-            GUI.Label(new Rect(400, 130, 10000, 100), "DONT " + deathType, guistyle);
+            GUI.Label(new Rect(Screen.width / 2 - 400, Screen.height / 2 - 100, 300, 80), "DONT " + deathType, guistyle);
         }
     }
 }
