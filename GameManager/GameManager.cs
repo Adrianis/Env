@@ -18,6 +18,13 @@ public class GameManager : MonoBehaviour {
     public int secsTillGameEnd = 360;
     public float secsTillEndGameResume = 6;
 
+    private Texture2D guiStarveTex;
+    private GUIStyle guiStarveStyle;
+    private Texture2D guiSurviveTex;
+    private GUIStyle guiSurviveStyle;
+    private Texture2D guiUpgradeTex;
+    private GUIStyle guiUpgradeStyle;
+
 
     ////////////////////
     // ENGINE METHODS //
@@ -34,13 +41,23 @@ public class GameManager : MonoBehaviour {
         Hoover = GameObject.FindGameObjectWithTag("Hoover");
 
         StartCoroutine("CheckForGameEnd");
+
+        InitialiseGUIStyles();
 	}
 
     void OnGUI()
     {
-        GUI.Label(new Rect(10, 65, 1000, 20), "Time to survive: " + (secsTillGameEnd - (int)Time.timeSinceLevelLoad));
+     /*   GUI.Label(new Rect(10, 65, 1000, 20), "Time to survive: " + (secsTillGameEnd - (int)Time.timeSinceLevelLoad));
         GUI.Label(new Rect(10, 85, 1000, 20), "Time till starvation: " + (Player.GetComponent<PlayerController>().timeTillStarve - secondsSinceLastEaten));
-        GUI.Label(new Rect(10, 105, 1000, 20), "Tech Level: " + playerTechLevel);
+        GUI.Label(new Rect(10, 105, 1000, 20), "Tech Level: " + playerTechLevel);*/
+        
+        int survive = (secsTillGameEnd - (int)Time.timeSinceLevelLoad);
+        int eaten = (int)(Player.GetComponent<PlayerController>().timeTillStarve - secondsSinceLastEaten) * 2;
+        int upgrade = playerTechLevel * 30;
+
+        GUI.Label(new Rect(10, 30, survive, 20), "Survive", guiSurviveStyle);
+        GUI.Label(new Rect(10, 50, eaten, 20), "Eat", guiStarveStyle);
+        GUI.Label(new Rect(10, 70, upgrade, 20), "Tech", guiUpgradeStyle);
     }
 
 
@@ -97,6 +114,31 @@ public class GameManager : MonoBehaviour {
         Time.maximumDeltaTime = Time.maximumDeltaTime / timeSlowFactor;
     }
 
+    private void InitialiseGUIStyles()
+    {
+        Color[] colours = {Color.grey};
+
+        guiStarveTex = new Texture2D(1, 1);
+        guiStarveTex.SetPixel(1, 1, Color.green);
+        guiStarveTex.wrapMode = TextureWrapMode.Repeat;
+        guiStarveTex.Apply();
+        guiStarveStyle = new GUIStyle();
+        guiStarveStyle.normal.background = guiStarveTex;
+
+        guiSurviveTex = new Texture2D(1, 1);
+        guiSurviveTex.SetPixel(1, 1, Color.grey);
+        guiSurviveTex.wrapMode = TextureWrapMode.Repeat;
+        guiSurviveTex.Apply();
+        guiSurviveStyle = new GUIStyle();
+        guiSurviveStyle.normal.background = guiSurviveTex;
+
+        guiUpgradeTex = new Texture2D(1, 1);
+        guiUpgradeTex.SetPixel(1, 1, Color.yellow);
+        guiUpgradeTex.wrapMode = TextureWrapMode.Repeat;
+        guiUpgradeTex.Apply();
+        guiUpgradeStyle = new GUIStyle();
+        guiUpgradeStyle.normal.background = guiUpgradeTex;
+    }
 
     ////////////////
     // COROUTINES //
