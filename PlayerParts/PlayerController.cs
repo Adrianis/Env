@@ -106,10 +106,12 @@ public class PlayerController : MonoBehaviour {
                 case "Food": // Remove Food & update stats
                     hit.gameObject.SetActive(false);
                     SecsSinceLastEaten = 1;
+                    GetComponents<AudioSource>()[0].Play();
                     break;
                 case "Tech": // Remove Tech & upgrade stats
                     hit.gameObject.SetActive(false);
                     TechLevel++; // [deprecated]
+                    GetComponents<AudioSource>()[1].Play();
                     break;
             }
         }
