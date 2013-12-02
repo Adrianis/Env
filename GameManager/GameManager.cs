@@ -3,6 +3,8 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+    public bool hasGameEnded = false;
+
     public float timeSlowFactor = 1;
     private float newTimeScale;
 
@@ -15,7 +17,7 @@ public class GameManager : MonoBehaviour {
     private GameObject Player;
     private GameObject Hoover;
 
-    public int secsTillGameEnd = 360;
+    public int secsTillGameEnd;
     public float secsTillEndGameResume = 6;
 
     private Texture2D guiStarveTex;
@@ -50,14 +52,17 @@ public class GameManager : MonoBehaviour {
      /*   GUI.Label(new Rect(10, 65, 1000, 20), "Time to survive: " + (secsTillGameEnd - (int)Time.timeSinceLevelLoad));
         GUI.Label(new Rect(10, 85, 1000, 20), "Time till starvation: " + (Player.GetComponent<PlayerController>().timeTillStarve - secondsSinceLastEaten));
         GUI.Label(new Rect(10, 105, 1000, 20), "Tech Level: " + playerTechLevel);*/
-        
-        int survive = (secsTillGameEnd - (int)Time.timeSinceLevelLoad);
-        int eaten = (int)(Player.GetComponent<PlayerController>().timeTillStarve - secondsSinceLastEaten) * 2;
-        int upgrade = playerTechLevel * 30;
 
-        GUI.Label(new Rect(10, 30, survive, 20), "Survive", guiSurviveStyle);
-        GUI.Label(new Rect(10, 50, eaten, 20), "Eat", guiStarveStyle);
-        GUI.Label(new Rect(10, 70, upgrade, 20), "Tech", guiUpgradeStyle);
+        if (!hasGameEnded)
+        {
+            int survive = (secsTillGameEnd - (int)Time.timeSinceLevelLoad);
+            int eaten = (int)(Player.GetComponent<PlayerController>().timeTillStarve - secondsSinceLastEaten) * 2;
+            int upgrade = playerTechLevel * 30;
+
+            GUI.Label(new Rect(10, 30, survive, 20), "Survive", guiSurviveStyle);
+            GUI.Label(new Rect(10, 50, eaten, 20), "Eat", guiStarveStyle);
+            GUI.Label(new Rect(10, 70, upgrade, 20), "Tech", guiUpgradeStyle);
+        }
     }
 
 
@@ -161,6 +166,7 @@ public class GameManager : MonoBehaviour {
         DisplayEndingText();
         StartCoroutine("DelayEndGameResume");
         Player.GetComponent<PlayerController>().canDie = false;
+        hasGameEnded = true;
     }
 
     IEnumerator DelayEndGameResume()

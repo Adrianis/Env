@@ -55,6 +55,8 @@ public class PlayerController : MonoBehaviour {
     void Awake()
     {
         Motor = this.GetComponent<CharacterMotor>();
+
+        Screen.showCursor = false;
     }
 
     void Start()
@@ -144,14 +146,17 @@ public class PlayerController : MonoBehaviour {
 
     private void KillPlayer(string deathType)
     {
-        // disable controls
-        this.GetComponent<CharacterMotor>().enabled = false;
-        this.GetComponent<FPSInputController>().enabled = false;
-        this.GetComponent<MouseLook>().enabled = false;
-        this.transform.GetChild(1).GetComponent<MouseLook>().enabled = false;
+        if (canDie)
+        {
+            // disable controls
+            this.GetComponent<CharacterMotor>().enabled = false;
+            this.GetComponent<FPSInputController>().enabled = false;
+            this.GetComponent<MouseLook>().enabled = false;
+            this.transform.GetChild(1).GetComponent<MouseLook>().enabled = false;
 
-        // call up Death in game manager, pass type
-        GameManager.GetComponent<GameManager>().PlayerDeath(deathType);
+            // call up Death in game manager, pass type
+            GameManager.GetComponent<GameManager>().PlayerDeath(deathType);
+        }
     }
 
     private Vector3 FindSpawnLocation()
